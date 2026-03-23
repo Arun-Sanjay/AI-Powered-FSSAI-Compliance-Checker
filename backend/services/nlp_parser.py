@@ -39,6 +39,7 @@ Return ONLY valid JSON (no markdown, no code blocks, no explanation) with this e
   "expiry_date": "string or null",
   "best_before": "string or null",
   "vegetarian_status": "veg or non-veg or not_specified",
+  "detected_languages": ["English", "Hindi", ...],
   "nutritional_info": {
     "energy_kcal": number or null,
     "protein_g": number or null,
@@ -60,7 +61,8 @@ Important extraction rules:
 5. For FSSAI LICENSE: Look for a 14-digit number, often near the FSSAI logo or at the bottom of the label. It may be prefixed with "Lic. No." or "FSSAI Lic."
 6. For NUTRITIONAL CLAIMS: Look for claims like "Sugar Free", "No Trans Fat", "High Protein", "Low Fat", "Natural", "No Artificial Colors", "No Added Sugar", "Whole Grain", etc.
 7. If the label contains Hindi or other Indian language text alongside English, extract the English text. If only Hindi is present, transliterate to English.
-8. Fix obvious OCR-like reading errors in printed text (e.g., "Sod1um" → "Sodium")."""
+8. Fix obvious OCR-like reading errors in printed text (e.g., "Sod1um" → "Sodium").
+9. For DETECTED LANGUAGES: List all languages visible on the label (e.g., ["English", "Hindi", "Tamil"]). Include every script/language you can identify."""
 
 
 def extract_label_data(image_bytes: bytes, content_type: str = "image/jpeg") -> LabelData:

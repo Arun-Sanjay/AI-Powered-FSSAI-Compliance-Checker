@@ -276,8 +276,8 @@ def check_claims(label: LabelData) -> list[ComplianceFinding]:
             ))
             continue
 
-        # Special case: "High Protein" uses % of energy, not raw grams
-        if "high protein" in claim_lower:
+        # Special case: protein claims use % of energy, not raw grams
+        if "high protein" in claim_lower or "source of protein" in claim_lower:
             if nutritional.protein_g is not None and nutritional.energy_kcal and nutritional.energy_kcal > 0:
                 protein_energy_pct = (nutritional.protein_g * 4 / nutritional.energy_kcal) * 100
                 threshold = matched_rule["threshold"]

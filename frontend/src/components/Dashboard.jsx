@@ -32,6 +32,11 @@ export default function Dashboard({ result, imageUrl, onReset }) {
                   .filter(Boolean)
                   .join(' — ')}
               </p>
+              {label_data.detected_languages?.length > 0 && (
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Languages: {label_data.detected_languages.join(', ')}
+                </p>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-2">

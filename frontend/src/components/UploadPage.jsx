@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { analyzeLabel } from '../services/api';
 import AnimatedLoader from './AnimatedLoader';
 
-export default function UploadPage({ onResult, onImageUrl, loading, setLoading }) {
+export default function UploadPage({ onResult, onImageUrl, onFileSelected, loading, setLoading }) {
   const [error, setError] = useState(null);
 
   const onDrop = useCallback(async (acceptedFiles) => {
@@ -13,6 +13,7 @@ export default function UploadPage({ onResult, onImageUrl, loading, setLoading }
     try {
       const file = acceptedFiles[0];
       onImageUrl(URL.createObjectURL(file));
+      if (onFileSelected) onFileSelected(file);
       const result = await analyzeLabel(file);
       onResult(result);
     } catch (err) {

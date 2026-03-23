@@ -37,6 +37,7 @@ class LabelData(BaseModel):
     best_before: Optional[str] = None
     vegetarian_status: Optional[str] = None  # veg / non-veg / not_specified
     nutritional_info: Optional[NutritionalInfo] = None
+    detected_languages: list[str] = []
 
 
 # --- Compliance engine output ---

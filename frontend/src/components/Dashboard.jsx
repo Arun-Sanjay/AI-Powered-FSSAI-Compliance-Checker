@@ -5,8 +5,9 @@ import FlaggedIssues from './FlaggedIssues';
 import AllergenTable from './AllergenTable';
 import ScenarioSimulator from './ScenarioSimulator';
 import ReportDownload from './ReportDownload';
+import NutritionPanel from './NutritionPanel';
 
-export default function Dashboard({ result, onReset }) {
+export default function Dashboard({ result, imageUrl, onReset }) {
   const { label_data, findings, risk_score, summary } = result;
 
   return (
@@ -14,15 +15,24 @@ export default function Dashboard({ result, onReset }) {
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-800">
-              {label_data.product_name || 'Analysis Results'}
-            </h1>
-            <p className="text-slate-500">
-              {[label_data.brand, label_data.food_category]
-                .filter(Boolean)
-                .join(' — ')}
-            </p>
+          <div className="flex items-center gap-4">
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt="Uploaded label"
+                className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg border border-slate-200 shrink-0"
+              />
+            )}
+            <div>
+              <h1 className="text-2xl font-bold text-slate-800">
+                {label_data.product_name || 'Analysis Results'}
+              </h1>
+              <p className="text-slate-500">
+                {[label_data.brand, label_data.food_category]
+                  .filter(Boolean)
+                  .join(' — ')}
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <ReportDownload result={result} />
@@ -106,6 +116,9 @@ export default function Dashboard({ result, onReset }) {
           findings={findings}
           additives={label_data.additives || []}
         />
+
+        {/* Nutritional Info */}
+        <NutritionPanel nutritionalInfo={label_data.nutritional_info} />
 
         {/* Allergen Cross-Reference */}
         <AllergenTable findings={findings} />

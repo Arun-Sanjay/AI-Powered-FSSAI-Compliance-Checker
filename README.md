@@ -1,5 +1,7 @@
 # AI-Powered FSSAI Compliance Checker
 
+![Tests](https://github.com/Arun-Sanjay/AI-Powered-FSSAI-Compliance-Checker/actions/workflows/test.yml/badge.svg)
+
 An intelligent food label analysis tool that uses **Claude Vision AI** to extract data from food product labels and automatically checks compliance against **FSSAI (Food Safety and Standards Authority of India)** regulations.
 
 Built as part of the Biosafety & Food Safety Experiential Learning project at RVCE, 2025-26.

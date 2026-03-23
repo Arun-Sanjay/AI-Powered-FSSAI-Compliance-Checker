@@ -9,24 +9,8 @@ from services.risk_scorer import calculate_risk_score, build_summary
 router = APIRouter()
 
 
-@router.post("/simulate", response_model=AnalysisResponse)
-async def run_simulation(request: SimulationRequest):
-    """
-    Run a 'what-if' scenario simulation.
-    Apply modifications to the label data, then re-run all compliance checks.
-
-    Supported modifications:
-      - remove_ingredients: list of ingredient names to remove
-      - add_allergen_declaration: list of allergens to add to declared list
-      - remove_additives: list of additive names to remove
-      - add_claim: claim string to add
-      - remove_claim: claim string to remove
-      - set_fssai_license: new license number
-    """
-    label = deepcopy(request.label_data)
-    mods = request.modifications
-
-    # Apply modifications
+def _apply_modifications(label: LabelData, mods: dict) -> LabelData:
+    """Apply what-if modifications to a LabelData object (mutates in place)."""
     if "remove_ingredients" in mods:
         remove_set = {r.lower() for r in mods["remove_ingredients"]}
         label.ingredients = [i for i in label.ingredients if i.lower() not in remove_set]
@@ -55,6 +39,18 @@ async def run_simulation(request: SimulationRequest):
 
     if "set_fssai_license" in mods:
         label.fssai_license = mods["set_fssai_license"]
+
+    return label
+
+
+@router.post("/simulate", response_model=AnalysisResponse)
+async def run_simulation(request: SimulationRequest):
+    """
+    Run a 'what-if' scenario simulation.
+    Apply modifications to the label data, then re-run all compliance checks.
+    """
+    label = deepcopy(request.label_data)
+    label = _apply_modifications(label, request.modifications)
 
     # Re-run compliance on modified data
     findings = run_all_checks(label)
